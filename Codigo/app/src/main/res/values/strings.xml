@@ -3,4 +3,16 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_register">Registrate!</string>
+    <string name="button_register">Registrarme</string>
+
+
+    <string name="input_name">Nombre</string>
+    <string name="input_lastName">Apellido</string>
+    <string name="input_dni">DNI</string>
+    <string name="input_email">Email</string>
+    <string name="input_password">Contraseña</string>
+
+
+
 </resources>

@@ -21,40 +21,45 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout2"
         android:layout_width="0dp"
-        android:layout_height="@dimen/input_button_width"
+        android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
+        android:theme="@style/TextInputEditText"
         android:ems="10"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.226">
+        app:layout_constraintVertical_bias="0.226"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/input_name"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout3"
         android:layout_width="0dp"
-        android:layout_height="@dimen/input_button_width"
+        android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="@dimen/input_button_margin_top"
         android:layout_marginEnd="50dp"
+        android:theme="@style/TextInputEditText"
         android:ems="10"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/lastname"
@@ -68,9 +73,10 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout4"
         android:layout_width="0dp"
-        android:layout_height="@dimen/input_button_width"
+        android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="@dimen/input_button_margin_top"
+        android:theme="@style/TextInputEditText"
         android:layout_marginEnd="50dp"
         android:ems="10"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -92,9 +98,10 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout5"
         android:layout_width="0dp"
-        android:layout_height="@dimen/input_button_width"
+        android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="@dimen/input_button_margin_top"
+        android:theme="@style/TextInputEditText"
         android:layout_marginEnd="50dp"
         android:ems="10"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -116,9 +123,10 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout7"
         android:layout_width="0dp"
-        android:layout_height="@dimen/input_button_width"
+        android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="@dimen/input_button_margin_top"
+        android:theme="@style/TextInputEditText"
         android:layout_marginEnd="50dp"
         android:ems="10"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -139,10 +147,10 @@
 
     <Button
         android:id="@+id/registerButton"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="@string/button_register"
-        android:textAppearance="@style/button"
+        android:theme="@style/RaisedButtonDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

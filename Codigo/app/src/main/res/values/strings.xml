@@ -14,5 +14,5 @@
     <string name="input_password">Contraseña</string>
     <string name="title_activity_test">TestActivity</string>
 
-
+    <string name="create_account">Crear cuenta</string>
 </resources>

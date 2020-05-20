@@ -6,4 +6,8 @@
     <dimen name="input_button_width">60dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="toolbar_elevation">4dp</dimen>
+    <dimen name="height_cardview">200sp</dimen>
+    <dimen name="card_title">32sp</dimen>
+    <dimen name="card_description">18sp</dimen>
+    <dimen name="margin_bottom_description">5sp</dimen>
 </resources>

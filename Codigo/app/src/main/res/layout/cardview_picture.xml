@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pictureCard"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_cardview"
+    cardview:cardCornerRadius="4dp">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/card_picture"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/imagetest"
+            android:scaleType="centerCrop"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="bottom"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            >
+
+            <TextView
+                android:id="@+id/card_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/card_title"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/card_title"
+                />
+
+            <TextView
+                android:id="@+id/card_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/card_description"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/card_description"
+                android:layout_marginBottom="@dimen/margin_bottom_description"
+                />
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VER ACTIVIDAD"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/card_description"
+                />
+
+            <Button
+                android:id="@+id/card_button"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/icon_card"
+
+                />
+
+        </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+    </FrameLayout>
+
+
+
+
+</androidx.cardview.widget.CardView>

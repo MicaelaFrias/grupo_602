@@ -5,8 +5,7 @@
     android:id="@+id/pictureCard"
     android:layout_width="match_parent"
     android:layout_height="@dimen/height_cardview"
-    cardview:cardCornerRadius="4dp"
-    android:layout_marginBottom="@dimen/activity_vertical_margin">
+    cardview:cardCornerRadius="4dp">
 
 
     <FrameLayout
@@ -51,19 +50,22 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
 
-            <Button
-                android:id="@+id/card_button"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/card_label_button"
+                android:text="VER ACTIVIDAD"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/card_description"
-                android:background="@drawable/btn_rounded"
-                android:paddingRight="15sp"
-                android:paddingLeft="15sp"
                 />
 
+            <Button
+                android:id="@+id/card_button"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/icon_card"
 
+                />
 
         </LinearLayout>
 

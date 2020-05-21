@@ -10,5 +10,4 @@
     <dimen name="card_title">32sp</dimen>
     <dimen name="card_description">18sp</dimen>
     <dimen name="margin_bottom_description">5sp</dimen>
-    <dimen name="user_name">24sp</dimen>
 </resources>

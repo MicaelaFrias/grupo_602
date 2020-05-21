@@ -11,9 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.midiendodistanciasmobile.AdapterRecyclerView.CardAdapterRecyclerView;
 import com.example.midiendodistanciasmobile.R;
+import com.example.midiendodistanciasmobile.model.Card;
 
+import java.util.ArrayList;
+
+//*Vive en una actividad*/
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
@@ -23,13 +30,24 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        RecyclerView cardsRecycles = root.findViewById(R.id.cardRecycler);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        cardsRecycles.setLayoutManager(linearLayoutManager);
+        CardAdapterRecyclerView cardAdapterRecyclerView =
+                new CardAdapterRecyclerView( buildCard(), R.layout.cardview_picture,getActivity());
+        cardsRecycles.setAdapter(cardAdapterRecyclerView);
+
         return root;
+    }
+
+    public ArrayList<Card> buildCard() {
+        ArrayList<Card> cards = new ArrayList<>();
+        cards.add(new Card("https://resizer.iproimg.com/unsafe/880x/https://assets.iprofesional.com/assets/jpg/2020/04/495335.jpg?5.6.0.5", "MI ACTIVIDAD", "Revisa tu actividad", "VER MI ACTIVIDAD"));
+        cards.add(new Card("https://d25rq8gxcq0p71.cloudfront.net/dictionary-images/465/6c65affc-6eed-4391-aef7-0615ebde9ae5.jpg", "INICIA TU RECORRIDO", "Controla tu salida", "INICIAR RECORRIDO"));
+
+        return cards;
     }
 }

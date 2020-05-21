@@ -1,4 +1,4 @@
-package com.example.midiendodistanciasmobile.model;
+package com.example.midiendodistanciasmobile.Models;
 
 public class Card {
 

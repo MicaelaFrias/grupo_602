@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.midiendodistanciasmobile.R;
-import com.example.midiendodistanciasmobile.model.Card;
+import com.example.midiendodistanciasmobile.Models.Card;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

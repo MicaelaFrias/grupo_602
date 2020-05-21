@@ -19,4 +19,5 @@
     <string name="create_account">Crear cuenta</string>
     <string name="card_description">Revisa tu registro de actividad.</string>
     <string name="card_title">Mi actividad!</string>
+    <string name="card_label_button">Botón</string>
 </resources>

@@ -3,8 +3,10 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_login">Ingresa!</string>
     <string name="title_register">Registrate!</string>
     <string name="button_register">Registrarme</string>
+    <string name="button_login">Ingresar</string>
 
 
     <string name="input_name">Nombre</string>

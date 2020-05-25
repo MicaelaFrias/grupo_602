@@ -1,6 +1,7 @@
 package com.example.midiendodistanciasmobile.WebService;
 
 import android.os.AsyncTask;
+import android.provider.SyncStateContract;
 import android.util.Log;
 
 import com.example.midiendodistanciasmobile.Constants.Constants;
@@ -18,44 +19,50 @@ import java.net.URL;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class PeticionAPIRest extends AsyncTask {
-    String uri;
+public class RegistroEvento extends AsyncTask {
+
     String env = Constants.ENV;
-    Integer commission;
-    Integer group;
+    String uri = Constants.URI_EVENTS;
+    String token;
+    String typeEvent;
+    String state;
+    String description;
+    AsyncResponse callback;
     JSONObject body;
 
-    AsyncResponse callback;
-
-    public PeticionAPIRest(String name, String lastname, Integer dni, String email, String password, String uri, AsyncResponse callback) throws JSONException {
-
-        this.callback = callback;
-        this.group = 602;
-        this.commission = 02;
-        this.uri = uri;
-
-        body = new JSONObject();
-        body.put("env", this.env);
-        body.put("name", name);
-        body.put("lastname", lastname);
-        body.put("dni", dni);
-        body.put("email", email);
-        body.put("password", password);
-        body.put("commission", this.commission);
-        body.put("group", this.group);
-
+    public RegistroEvento(String token, String typeEvent, String state, String description) {
+        this.token = token;
+        this.typeEvent = typeEvent;
+        this.state = state;
+        this.description = description;
     }
 
+    public RegistroEvento(String token, String typeEvent, String state, String description, AsyncResponse callback) {
+        this.callback = callback;
+        this.token = token;
+        this.typeEvent = typeEvent;
+        this.state = state;
+        this.description = description;
+    }
+
+    public void setBody() throws JSONException {
+        body = new JSONObject();
+        body.put("env", this.env);
+        body.put("type_events", this.typeEvent);
+        body.put("state", this.state);
+        body.put("description", this.description);
+    }
 
     @Override
     protected Object doInBackground(Object[] objects) {
-
         try{
-            Log.i(TAG, "Before:: " + this.uri + " __ " + this.body.toString());
-
+            this.setBody();
+            Log.i(TAG, "Before:: " + this.token + " ____ "  + this.uri + " __ " + this.body.toString());
             URL url=new URL(this.uri);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setDoOutput(true);
+            String token = "" + new String(this.token);
+            con.setRequestProperty("token", token);
             con.setRequestProperty("Content-Type", "application/json");
             con.setRequestMethod("POST");
 
@@ -77,40 +84,24 @@ public class PeticionAPIRest extends AsyncTask {
                 while ((chunks = buff.readLine()) != null) {
                     dta.append(chunks);
                 }
-                Log.i(TAG, "Response: " + dta.toString());
+                Log.i(TAG, "******Response Events******: " + dta.toString());
                 return dta.toString();
             } else {
-                Log.i(TAG, "doInBackground:  StatusCode" + statusCode + "  Message: " + statusMsg );
+                Log.i(TAG, "doInBackground Events:  StatusCode" + statusCode + "  Message: " + statusMsg );
             }
 
         }catch (Exception e ){
-            Log.e(TAG, "doInBackground: error Thread " + e.getMessage(),e );
+            Log.e(TAG, "doInBackground Events: error Thread " + e.getMessage(),e );
         }
 
         return null;
     }
 
-     @Override
-     protected void onPostExecute(Object response) {
 
-        if (response == null) {
-            Log.e(TAG, "onPostExecute: Error de llamada");
-            this.callback.processFinish("error", this.env, "error");
-            return;
-        }
+    @Override
+    protected void onPostExecute(Object response) {
 
-         try {
+    }
 
-             JSONObject obj = new JSONObject( (String)response);
-             String state = obj.getString("state");
-             String env = obj.getString("env");
-             String token = obj.getString("token");
 
-             this.callback.processFinish(state, env, token);
-
-         } catch (JSONException e) {
-             e.printStackTrace();
-         }
-
-     }
 }

@@ -13,7 +13,10 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.midiendodistanciasmobile.Constants.Constants;
 import com.example.midiendodistanciasmobile.WebService.AsyncResponse;
 import com.example.midiendodistanciasmobile.WebService.PeticionAPIRest;
+import com.example.midiendodistanciasmobile.WebService.RegistroEvento;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.nio.charset.StandardCharsets;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -77,13 +80,13 @@ public class RegisterActivity extends AppCompatActivity {
                                     Log.e("ERROR", "processFinish: Error en petición rest API." );
                                     return;
                                 }
-
+                                Log.i("Response", "Response de petición:");
                                 Log.i("Response", "State: " + status);
                                 Log.i("Response", "Env: " + env);
+                                Log.i("Response", "Token: " + token);
 
-                                if (env == Constants.ENV_DEV )  {
-                                    Log.i("Response", "Token: " + token);
-                                }
+                                RegistroEvento evento = new RegistroEvento(token, "Registro de usuario", "ACTIVO", "Registro de usuario.");
+                                evento.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
                                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 startActivity(intent);

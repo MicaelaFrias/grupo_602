@@ -21,8 +21,8 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class PeticionAPIRest extends AsyncTask {
     String uri;
     String env = Constants.ENV;
-    Integer commission;
-    Integer group;
+    Integer commission = Constants.NUM_COMMISSION;
+    Integer group = Constants.NUM_GROUP;
     JSONObject body;
 
     AsyncResponse callback;
@@ -30,8 +30,6 @@ public class PeticionAPIRest extends AsyncTask {
     public PeticionAPIRest(String name, String lastname, Integer dni, String email, String password, String uri, AsyncResponse callback) throws JSONException {
 
         this.callback = callback;
-        this.group = 602;
-        this.commission = 02;
         this.uri = uri;
 
         body = new JSONObject();
@@ -103,7 +101,7 @@ public class PeticionAPIRest extends AsyncTask {
 
              JSONObject obj = new JSONObject( (String)response);
              String state = obj.getString("state");
-             String env = obj.getString("env");
+             String env = this.uri == Constants.URI_REGISTER ? obj.getString("env"): "none" ;
              String token = obj.getString("token");
 
              this.callback.processFinish(state, env, token);

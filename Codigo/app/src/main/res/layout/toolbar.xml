@@ -2,8 +2,10 @@
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
     android:elevation="@dimen/toolbar_elevation"
+    app:theme="@style/ToolBarStyle"
     android:id="@+id/toolbar">
 
 </androidx.appcompat.widget.Toolbar>

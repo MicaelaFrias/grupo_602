@@ -10,13 +10,11 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.midiendodistanciasmobile.Constants.Constants;
+import com.example.midiendodistanciasmobile.Utilities.Constants;
 import com.example.midiendodistanciasmobile.WebService.AsyncResponse;
 import com.example.midiendodistanciasmobile.WebService.PeticionAPIRest;
 import com.example.midiendodistanciasmobile.WebService.RegistroEvento;
 import com.google.android.material.textfield.TextInputEditText;
-
-import java.nio.charset.StandardCharsets;
 
 public class RegisterActivity extends AppCompatActivity {
 

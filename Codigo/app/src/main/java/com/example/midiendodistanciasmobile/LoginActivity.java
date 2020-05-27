@@ -1,19 +1,23 @@
 package com.example.midiendodistanciasmobile;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Button;
 import android.view.View;
 
-import com.example.midiendodistanciasmobile.Constants.Constants;
+import com.example.midiendodistanciasmobile.Utilities.Constants;
 import com.example.midiendodistanciasmobile.WebService.AsyncResponse;
 import com.example.midiendodistanciasmobile.WebService.PeticionAPIRest;
 import com.example.midiendodistanciasmobile.WebService.RegistroEvento;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.net.InetAddress;
 
 public class LoginActivity  extends AppCompatActivity {
     Button loginButton;
@@ -46,6 +50,14 @@ public class LoginActivity  extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
+                boolean isInternetAvailable = isInternetAvailable();
+                Log.i("INTERNET", "onClick INTERNET: " + isInternetAvailable);
+
+                if (!isInternetAvailable) {
+                    /*MOSTRAR MENSAJE DE ERROR DE CONEXION*/
+                    return;
+                }
 
                 try {
 
@@ -92,11 +104,8 @@ public class LoginActivity  extends AppCompatActivity {
                     login.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
                 }catch (Exception e) {
-
+                    Log.e("ERROR", "onClick ERROR: " + e.getMessage(), e );
                 }
-
-
-
             }
         });
 
@@ -104,6 +113,7 @@ public class LoginActivity  extends AppCompatActivity {
         registrateButton = findViewById(R.id.registrateButton);
         registrateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
 
@@ -111,6 +121,21 @@ public class LoginActivity  extends AppCompatActivity {
         });
     }
 
+    private boolean isInternetAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if ( cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected() ){
+            Log.i("INTERNET", "isInternetAvailable: there is network");
+            try {
+                final String command = "ping -c 1 google.com";
+                return Runtime.getRuntime().exec(command).waitFor() == 0;
+
+            } catch (Exception e) {
+                Log.i("INTERNET", "error: " + e.getMessage());
+            }
+        }
+        return false;
+    }
 
 
 }

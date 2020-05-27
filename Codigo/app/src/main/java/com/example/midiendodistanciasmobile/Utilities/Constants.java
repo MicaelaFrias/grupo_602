@@ -1,4 +1,4 @@
-package com.example.midiendodistanciasmobile.Constants;
+package com.example.midiendodistanciasmobile.Utilities;
 
 public class Constants {
 

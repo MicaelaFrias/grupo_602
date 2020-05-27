@@ -1,10 +1,9 @@
 package com.example.midiendodistanciasmobile.WebService;
 
 import android.os.AsyncTask;
-import android.provider.SyncStateContract;
 import android.util.Log;
 
-import com.example.midiendodistanciasmobile.Constants.Constants;
+import com.example.midiendodistanciasmobile.Utilities.Constants;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -10,7 +10,9 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.midiendodistanciasmobile.Utilities.AlertDialog;
 import com.example.midiendodistanciasmobile.Utilities.Constants;
+import com.example.midiendodistanciasmobile.Utilities.Internet;
 import com.example.midiendodistanciasmobile.WebService.AsyncResponse;
 import com.example.midiendodistanciasmobile.WebService.PeticionAPIRest;
 import com.example.midiendodistanciasmobile.WebService.RegistroEvento;
@@ -49,25 +51,17 @@ public class RegisterActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
+                if (!validateData()) {
+                    return;
+                }
+
+                valueName = name.getText().toString();
+                valueLastname =  lastname.getText().toString();
+                valueDni =  Integer.parseInt(dni.getText().toString());
+                valueEmail =  email.getText().toString();
+                valuePassword = password.getText().toString();
+
                 try {
-
-                    if ( name.getText().toString().length() == 0 || lastname.getText().toString().length() == 0 ||
-                            dni.getText().toString().length() == 0 || email.getText().toString().length() == 0 ||
-                            password.getText().toString().length() == 0){
-                        Log.i("Inputs Error", "onClick: Error en valores");
-                        return;
-                    }
-
-                    if ( password.getText().toString().length() < 8){
-                        Log.i("Password Error", "onClick: Password Menor a 8 caracteres");
-                        return;
-                    }
-
-                    valueName = name.getText().toString();
-                    valueLastname =  lastname.getText().toString();
-                    valueDni =  Integer.parseInt(dni.getText().toString());
-                    valueEmail =  email.getText().toString();
-                    valuePassword = password.getText().toString();
 
                     PeticionAPIRest registro =  new PeticionAPIRest(valueName, valueLastname, valueDni, valueEmail, valuePassword, Constants.URI_REGISTER,
                         new AsyncResponse() {
@@ -75,6 +69,8 @@ public class RegisterActivity extends AppCompatActivity {
                             public void processFinish(String status, String env, String token) {
 
                                 if (status == Constants.STATE_ERROR) {
+                                    AlertDialog.displayAlertDialog(RegisterActivity.this, "Algo ha ocurrido.",
+                                            "No se pudo completar el registro. Verifique que los datos sean correctos.", "OK");
                                     Log.e("ERROR", "processFinish: Error en petición rest API." );
                                     return;
                                 }
@@ -114,6 +110,40 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public boolean validateData(){
+
+        boolean internetConnection = Internet.isInternetAvailable(RegisterActivity.this);
+
+        if (!internetConnection) {
+            AlertDialog.displayAlertDialog(RegisterActivity.this, "Error de conexión",
+                    "Verifique su conexión a internet.", "OK");
+
+            Log.i("Internet", "internet error");
+            return false;
+        }
+
+        if ( name.getText().toString().length() == 0 || lastname.getText().toString().length() == 0 ||
+                dni.getText().toString().length() == 0 || email.getText().toString().length() == 0 ||
+                password.getText().toString().length() == 0){
+
+            AlertDialog.displayAlertDialog(RegisterActivity.this, "Datos incompletos",
+                    "Todos los datos son requeridos, verifique de completar todos.", "OK");
+
+            Log.i("Inputs Error", "onClick: Error en valores");
+            return false;
+        }
+
+        if ( password.getText().toString().length() < 8){
+            AlertDialog.displayAlertDialog(RegisterActivity.this, "Contraseña debil",
+                    "La contraseña debe tener al menos 8 caracteres.", "OK");
+
+            Log.i("Password Error", "onClick: Password Menor a 8 caracteres");
+            return false;
+        }
+
+        return true;
     }
 
 }

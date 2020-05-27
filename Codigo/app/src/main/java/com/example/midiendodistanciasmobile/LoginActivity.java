@@ -11,7 +11,9 @@ import android.util.Log;
 import android.widget.Button;
 import android.view.View;
 
+import com.example.midiendodistanciasmobile.Utilities.AlertDialog;
 import com.example.midiendodistanciasmobile.Utilities.Constants;
+import com.example.midiendodistanciasmobile.Utilities.Internet;
 import com.example.midiendodistanciasmobile.WebService.AsyncResponse;
 import com.example.midiendodistanciasmobile.WebService.PeticionAPIRest;
 import com.example.midiendodistanciasmobile.WebService.RegistroEvento;
@@ -51,33 +53,17 @@ public class LoginActivity  extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                boolean isInternetAvailable = isInternetAvailable();
-                Log.i("INTERNET", "onClick INTERNET: " + isInternetAvailable);
-
-                if (!isInternetAvailable) {
-                    /*MOSTRAR MENSAJE DE ERROR DE CONEXION*/
+                if (!validateData()) {
                     return;
                 }
 
+                valueName = name.getText().toString();
+                valueLastname =  lastname.getText().toString();
+                valueDni =  Integer.parseInt(dni.getText().toString());
+                valueEmail =  email.getText().toString();
+                valuePassword = password.getText().toString();
+
                 try {
-
-                    if ( name.getText().toString().length() == 0 || lastname.getText().toString().length() == 0 ||
-                            dni.getText().toString().length() == 0 || email.getText().toString().length() == 0 ||
-                            password.getText().toString().length() == 0){
-                        Log.i("Inputs Error", "onClick: Error en valores");
-                        return;
-                    }
-
-                    if ( password.getText().toString().length() < 8){
-                        Log.i("Password Error", "onClick: Password Menor a 8 caracteres");
-                        return;
-                    }
-
-                    valueName = name.getText().toString();
-                    valueLastname =  lastname.getText().toString();
-                    valueDni =  Integer.parseInt(dni.getText().toString());
-                    valueEmail =  email.getText().toString();
-                    valuePassword = password.getText().toString();
 
                     PeticionAPIRest login =  new PeticionAPIRest(valueName, valueLastname, valueDni, valueEmail, valuePassword, Constants.URI_LOGIN,
                             new AsyncResponse() {
@@ -85,6 +71,8 @@ public class LoginActivity  extends AppCompatActivity {
                                 public void processFinish(String status, String env, String token) {
 
                                     if (status == Constants.STATE_ERROR) {
+                                        AlertDialog.displayAlertDialog(LoginActivity.this, "Error en Inicio de sesión.",
+                                                "No se pudo iniciar sesión. Verifique que los datos sean correctos.", "OK");
                                         Log.e("ERROR", "processFinish: Error en petición rest API." );
                                         return;
                                     }
@@ -121,20 +109,38 @@ public class LoginActivity  extends AppCompatActivity {
         });
     }
 
-    private boolean isInternetAvailable() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+    public boolean validateData() {
 
-        if ( cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected() ){
-            Log.i("INTERNET", "isInternetAvailable: there is network");
-            try {
-                final String command = "ping -c 1 google.com";
-                return Runtime.getRuntime().exec(command).waitFor() == 0;
+        boolean internetConnection = Internet.isInternetAvailable(LoginActivity.this);
 
-            } catch (Exception e) {
-                Log.i("INTERNET", "error: " + e.getMessage());
-            }
+        if (!internetConnection) {
+            AlertDialog.displayAlertDialog(LoginActivity.this, "Error de conexión",
+                    "Verifique su conexión a internet.", "OK");
+
+            Log.i("Internet", "internet error");
+            return false;
         }
-        return false;
+
+        if ( name.getText().toString().length() == 0 || lastname.getText().toString().length() == 0 ||
+                dni.getText().toString().length() == 0 || email.getText().toString().length() == 0 ||
+                password.getText().toString().length() == 0){
+
+            AlertDialog.displayAlertDialog(LoginActivity.this, "Datos incompletos",
+                    "Todos los datos son requeridos, verifique de completar todos.", "OK");
+
+            Log.i("Inputs Error", "onClick: Error en valores");
+            return false;
+        }
+
+        if ( password.getText().toString().length() < 8){
+            AlertDialog.displayAlertDialog(LoginActivity.this, "Datos incorrectos",
+                    "Verifique que los datos sean correctos.", "OK");
+
+            Log.i("Password Error", "onClick: Password Menor a 8 caracteres");
+            return false;
+        }
+
+        return true;
     }
 
 

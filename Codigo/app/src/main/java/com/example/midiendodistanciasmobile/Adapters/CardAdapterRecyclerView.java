@@ -1,4 +1,4 @@
-package com.example.midiendodistanciasmobile.AdapterRecyclerView;
+package com.example.midiendodistanciasmobile.Adapters;
 
 import android.app.Activity;
 import android.view.LayoutInflater;

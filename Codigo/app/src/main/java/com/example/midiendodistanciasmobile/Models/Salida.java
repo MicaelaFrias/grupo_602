@@ -1,5 +1,8 @@
 package com.example.midiendodistanciasmobile.Models;
 
+import java.sql.Time;
+import java.util.Date;
+
 public class Salida {
 
     public int Id;

@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.midiendodistanciasmobile.AdapterRecyclerView.CardAdapterRecyclerView;
+import com.example.midiendodistanciasmobile.Adapters.CardAdapterRecyclerView;
 import com.example.midiendodistanciasmobile.R;
 import com.example.midiendodistanciasmobile.Models.Card;
 

@@ -22,7 +22,7 @@ public class Actividad {
 
     public String toString()
     {
-        return "Nro: " +  Id + "Fecha: " + Fecha.getDay() + "/" + Fecha.getMonth() + "/" + Fecha.getYear()  + "Cantidad de pasos: " +  CantidadPasos;
+        return "Nro: " +  Id + " Fecha: " + Fecha.getDay() + "/" + Fecha.getMonth() + "/" + Fecha.getYear()  + " Cantidad de pasos: " +  CantidadPasos;
     }
 }
 

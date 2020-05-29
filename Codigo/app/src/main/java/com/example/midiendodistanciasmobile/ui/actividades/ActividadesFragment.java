@@ -42,9 +42,9 @@ public class ActividadesFragment extends Fragment {
 
         if (db != null) {
             //inserto valores de prueba para actividades (proximamente se insertaria al hacer efectivamente una actividad)
-/*
-            db.execSQL("INSERT INTO Actividad (Id, CantidadPasos) VALUES (1,250)");
-*/
+
+            db.execSQL("INSERT INTO Actividad (CantidadPasos, UsuarioId) VALUES (200,1)");
+
             actividades = GetActividades(db);
         }
         final ListView list = root.findViewById(R.id.list);
@@ -76,12 +76,7 @@ public class ActividadesFragment extends Fragment {
             db.close();
 
 
-        /*ArrayList<Actividad> actividades = new ArrayList<>();
-        actividades.add(new Actividad(1, 125, new Date(2020, 05, 07), new Usuario()));
-        actividades.add(new Actividad(1, 125, new Date(2020, 06, 02), new Usuario()));
-        actividades.add(new Actividad(1, 125, new Date(2020, 07, 02), new Usuario()));
-        actividades.add(new Actividad(1, 125, new Date(2020, 05, 04), new Usuario()));
-        actividades.add(new Actividad(1, 125, new Date(2020, 05, 02), new Usuario()));*/
+
         return actividades;
     }
 

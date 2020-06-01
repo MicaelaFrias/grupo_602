@@ -22,4 +22,11 @@
         android:name="com.example.midiendodistanciasmobile.ui.actividades.ActividadesFragment"
         android:label="@string/title_actividades"
         tools:layout="@layout/fragment_actividades" />
+
+    <fragment
+        android:id="@+id/navigation_entretenimiento"
+        android:name="com.example.midiendodistanciasmobile.ui.entretenimiento.Entretenimiento"
+        android:label="@string/title_entretenimiento"
+        tools:layout="@layout/fragment_entretenimiento" />
+
 </navigation>

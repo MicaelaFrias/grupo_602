@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/title_actividades" />
 
+    <item
+        android:id="@+id/navigation_entretenimiento"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="@string/title_entretenimiento" />
+
 </menu>

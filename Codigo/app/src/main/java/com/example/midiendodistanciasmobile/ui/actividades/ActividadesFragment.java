@@ -1,8 +1,13 @@
 package com.example.midiendodistanciasmobile.ui.actividades;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,10 +30,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ActividadesFragment extends Fragment {
+import static androidx.core.content.ContextCompat.getSystemService;
+
+public class ActividadesFragment extends Fragment implements SensorEventListener {
 
     private ActividadesViewModel actividadesViewModel;
-
+    private SQLiteDatabase db;
+    private SensorManager mSensorManager;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -37,26 +45,30 @@ public class ActividadesFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_actividades, container, false);
 
         SQLiteHelper dbHelper = new SQLiteHelper(getActivity());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db = dbHelper.getWritableDatabase();
         ArrayList<Actividad> actividades = new ArrayList<Actividad>();
+
+        initSensor();
 
         if (db != null) {
             //inserto valores de prueba para actividades (proximamente se insertaria al hacer efectivamente una actividad)
-
-            db.execSQL("INSERT INTO Actividad (CantidadPasos, UsuarioId) VALUES (200,1)");
-
+            //db.execSQL("INSERT INTO Actividad (CantidadPasos, UsuarioId) VALUES (200,1)");
             actividades = GetActividades(db);
         }
+
         final ListView list = root.findViewById(R.id.list);
-
         ArrayAdapter<Actividad> arrayAdapter = new ArrayAdapter<Actividad>(getActivity(), android.R.layout.simple_list_item_1, actividades);
-
         list.setAdapter(arrayAdapter);
-
         return root;
     }
 
+    private void initSensor() {
 
+        mSensorManager = (SensorManager) getContext().getSystemService(Context.SENSOR_SERVICE);
+        Sensor sSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        mSensorManager.registerListener(this, sSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+    }
 
     public ArrayList<Actividad> GetActividades(SQLiteDatabase db) {
         ArrayList<Actividad> actividades = new ArrayList<Actividad>();
@@ -75,9 +87,18 @@ public class ActividadesFragment extends Fragment {
             c.close();
             db.close();
 
-
-
         return actividades;
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        float step = event.values[0];
+        Log.i("SENSOR_STEP", "onSensorChanged: Se detecto paso nro: " + step);
+    }
+
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
 }

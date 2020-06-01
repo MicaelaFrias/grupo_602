@@ -34,8 +34,6 @@ public class Entretenimiento extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent( getActivity(), MainGame.class);
                 startActivity(intent);
-
-
             }
         });
 

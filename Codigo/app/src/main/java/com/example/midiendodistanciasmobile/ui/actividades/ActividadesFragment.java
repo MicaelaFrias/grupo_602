@@ -36,6 +36,7 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
 
     private ActividadesViewModel actividadesViewModel;
     private SQLiteDatabase db;
+    public int contadorPasos = 0;
     private SensorManager mSensorManager;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -52,7 +53,8 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
 
         if (db != null) {
             //inserto valores de prueba para actividades (proximamente se insertaria al hacer efectivamente una actividad)
-            //db.execSQL("INSERT INTO Actividad (CantidadPasos, UsuarioId) VALUES (200,1)");
+           /* db.execSQL("INSERT INTO Usuario (Id) VALUES (1)");
+            db.execSQL("INSERT INTO Actividad (CantidadPasos, UsuarioId) VALUES (200,1)");*/
             actividades = GetActividades(db);
         }
 
@@ -65,8 +67,8 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
     private void initSensor() {
 
         mSensorManager = (SensorManager) getContext().getSystemService(Context.SENSOR_SERVICE);
-        Sensor sSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        mSensorManager.registerListener(this, sSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        Sensor sSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        mSensorManager.registerListener(this, sSensor, SensorManager.SENSOR_DELAY_FASTEST);
 
     }
 
@@ -93,7 +95,7 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
     @Override
     public void onSensorChanged(SensorEvent event) {
         float step = event.values[0];
-        Log.i("SENSOR_STEP", "onSensorChanged: Se detecto paso nro: " + step);
+        Log.i("SENSOR_STEP", "onSensorChanged: Se detecto paso nro: " + contadorPasos++);
     }
 
 

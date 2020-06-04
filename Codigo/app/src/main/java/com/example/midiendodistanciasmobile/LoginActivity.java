@@ -1,16 +1,20 @@
 package com.example.midiendodistanciasmobile;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Button;
 import android.view.View;
 
+import com.example.midiendodistanciasmobile.Helpers.SQLiteHelper;
 import com.example.midiendodistanciasmobile.Utilities.AlertDialog;
 import com.example.midiendodistanciasmobile.Utilities.Constants;
 import com.example.midiendodistanciasmobile.Utilities.Internet;
@@ -30,6 +34,7 @@ public class LoginActivity  extends AppCompatActivity {
     TextInputEditText dni;
     TextInputEditText email;
     TextInputEditText password;
+    private SQLiteDatabase db;
 
     String valueName;
     String valueLastname;
@@ -55,7 +60,7 @@ public class LoginActivity  extends AppCompatActivity {
 
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
-/*
+
                 if (!validateData()) {
                     return;
                 }
@@ -84,11 +89,21 @@ public class LoginActivity  extends AppCompatActivity {
                                     Log.i("Response", "Env: " + env);
                                     Log.i("Response", "Token: " + token);
 
+                                    //guardamos usuario en base de datos
+                                    SQLiteHelper dbHelper = new SQLiteHelper(LoginActivity.this);
+                                    db = dbHelper.getWritableDatabase();
+                                    Cursor c = db.rawQuery("Select * from Usuario WHERE Email =  ?", new String[]{valueEmail});
+
+                                    if (db != null && c.getCount()==0) {
+
+                                        db.execSQL("INSERT INTO Usuario (Email) VALUES ('" + valueEmail + "')");
+                                    }
+
                                     RegistroEvento evento = new RegistroEvento(token, "Login de usuario", "ACTIVO", "Login de usuario: " + valueEmail);
                                     evento.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    intent.putExtra("UserMail",email)
+                                    intent.putExtra("UserEmail", valueEmail);
                                     startActivity(intent);
                                 }
                             });
@@ -97,7 +112,7 @@ public class LoginActivity  extends AppCompatActivity {
 
                 }catch (Exception e) {
                     Log.e("ERROR", "onClick ERROR: " + e.getMessage(), e );
-                }*/
+                }
             }
         });
 

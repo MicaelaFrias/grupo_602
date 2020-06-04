@@ -26,7 +26,6 @@ import java.util.ArrayList;
 public class RegisterActivity extends AppCompatActivity {
 
     Button registerButton;
-    private SQLiteDatabase db;
     TextInputEditText name;
     TextInputEditText lastname;
     TextInputEditText dni;
@@ -87,14 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     RegistroEvento evento = new RegistroEvento(token, "Registro de usuario", "ACTIVO", "Registro de usuario.");
                                     evento.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-                                    //guardamos usuario en base de datos
-                                    SQLiteHelper dbHelper = new SQLiteHelper(RegisterActivity.this);
-                                    db = dbHelper.getWritableDatabase();
 
-                                    if (db != null) {
-
-                                        db.execSQL("INSERT INTO Usuario (Email) VALUES (valueEmail)");
-                                    }
                                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                     startActivity(intent);
                                 }

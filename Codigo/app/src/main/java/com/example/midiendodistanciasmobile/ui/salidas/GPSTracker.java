@@ -18,14 +18,13 @@ public final class GPSTracker implements LocationListener {
 
     public boolean isGPSEnabled = false;
     boolean isNetworkEnabled = false;
-    boolean canGetLocation = false;
     Integer DIST_LIMITE = 20;
     Location location; // location
     double latitude; // latitude
     double longitude; // longitude
     double firstLatitude; // latitude
     double firstLongitude; // longitude
-
+    float distMax = 0;
     // The minimum distance to change Updates in meters
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1; // 10 meters
     // The minimum time between updates in milliseconds
@@ -62,8 +61,6 @@ public final class GPSTracker implements LocationListener {
             }
 
             ActivityCompat.requestPermissions((Activity) mContext,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-            this.canGetLocation = true;
 
             if (isNetworkEnabled) {
 
@@ -157,52 +154,6 @@ public final class GPSTracker implements LocationListener {
         return longitude;
     }
 
-    /**
-     * Function to check GPS/wifi enabled
-     *
-     * @return boolean
-     * */
-    public boolean canGetLocation() {
-        return this.canGetLocation;
-    }
-
-    /**
-     * Function to show settings alert dialog On pressing Settings button will
-     * lauch Settings Options
-     * */
-
-/*    public void showSettingsAlert() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-
-        // Setting Dialog Title
-        alertDialog.setTitle("GPS is settings");
-
-        // Setting Dialog Message
-        alertDialog
-                .setMessage("GPS is not enabled. Do you want to go to settings menu?");
-
-        // On pressing Settings button
-        alertDialog.setPositiveButton("Settings",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(
-                                Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        mContext.startActivity(intent);
-                    }
-                });
-
-        // on pressing cancel button
-        alertDialog.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-        // Showing Alert Message
-        alertDialog.show();
-    }
-*/
     @Override
     public void onLocationChanged(Location location) {
 
@@ -213,13 +164,21 @@ public final class GPSTracker implements LocationListener {
 
         Log.i("GPS-INITIAL", "Latitude:" + firstLatitude + ", Longitude:" + firstLongitude);
         Log.i("GPS-CHANGE", "Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude());
-        double dist = this.distFrom(firstLatitude, firstLongitude,location.getLatitude(), location.getLongitude());
+        float dist = this.distFrom(firstLatitude, firstLongitude,location.getLatitude(), location.getLongitude());
+
+        if (dist > distMax){
+            distMax = dist;
+        }
+        AlertDialog.displayAlertDialog((Activity) mContext,"GPS Distancia", "Distancia calculada:: " + dist, "Ok");
 
         if (dist >= DIST_LIMITE) {
-            AlertDialog.displayAlertDialog((Activity) mContext,"GPS Distancia", "Distancia calculada:: " + dist, "Ok");
         }
 
         Log.i("GPS-Dist", "Distancia:: " + dist);
+    }
+
+    public float getDistMax(){
+        return distMax;
     }
 
     @Override

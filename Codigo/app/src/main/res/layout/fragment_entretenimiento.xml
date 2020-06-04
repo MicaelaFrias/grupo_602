@@ -54,8 +54,8 @@
 
     <ImageView
         android:id="@+id/card_picture"
-        android:layout_width="311dp"
-        android:layout_height="136dp"
+        android:layout_width="309dp"
+        android:layout_height="240dp"
         android:layout_marginTop="40dp"
         android:background="@drawable/game"
         android:scaleType="centerCrop"

@@ -1,11 +1,15 @@
 package com.example.midiendodistanciasmobile.ui.entretenimiento;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.midiendodistanciasmobile.LoginActivity;
+import com.example.midiendodistanciasmobile.RegisterActivity;
 
 
 public class MainGame extends AppCompatActivity {

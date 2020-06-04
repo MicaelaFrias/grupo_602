@@ -22,4 +22,9 @@
     <string name="card_label_button">Botón</string>
     <string name="title_entretenimiento">Entretenimiento</string>
     <string name="button_game">Comenzar juego</string>
+    <string name="description_salidas">Oprima \'Comenzar\' para iniciar la salida segura.</string>
+    <string name="button_salida">Comenzar</string>
+    <string name="title_registros">Registros</string>
+    <string name="description_entr">Ayuda a Donky a morfar antes de que termine el tiempo. Desplaza a Donky moviendo el celular en todos los sentidos y aumenta su tamaño comiendo los puntos.</string>
+    <string name="description_ranking">Mejor Puntaje:</string>
 </resources>

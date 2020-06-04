@@ -96,6 +96,11 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
     public void onSensorChanged(SensorEvent event) {
         float step = event.values[0];
         Log.i("SENSOR_STEP", "onSensorChanged: Se detecto paso nro: " + contadorPasos++);
+
+        /*
+        * Agregar a base, si existe un registro con la misma fecha, cada 30pasos-> actualizar
+        * else -> crear nuevo registro
+        * */
     }
 
 

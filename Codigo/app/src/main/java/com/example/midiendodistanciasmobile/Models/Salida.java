@@ -6,9 +6,11 @@ import java.util.Date;
 public class Salida {
 
     public int Id;
-    public Date fecha;
-    public Time horaSalida;
-    public Time horaRegreso;
-    public float distanciaMax;
-    public float distanciaRecorrida;
+    public Date Fecha;
+    public Time HoraSalida;
+    public Time HoraRegreso;
+    public float DistanciaMax;
+    public float DistanciaRecorrida;
+    public Usuario Usuario;
+
 }

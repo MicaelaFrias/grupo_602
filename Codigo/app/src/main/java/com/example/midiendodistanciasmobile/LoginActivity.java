@@ -88,6 +88,7 @@ public class LoginActivity  extends AppCompatActivity {
                                     evento.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    intent.putExtra("UserMail",email)
                                     startActivity(intent);
                                 }
                             });

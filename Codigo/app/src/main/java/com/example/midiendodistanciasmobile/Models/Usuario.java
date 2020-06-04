@@ -12,5 +12,6 @@ public class Usuario {
     public String Password;
     public String Grupo;
     public List<Actividad> Actividades;
+    public List<Salida> Salidas;
     public NivelActividad NivelActividad;
 }

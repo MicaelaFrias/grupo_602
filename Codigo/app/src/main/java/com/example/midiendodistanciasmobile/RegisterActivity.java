@@ -1,6 +1,7 @@
 package com.example.midiendodistanciasmobile;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,8 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.midiendodistanciasmobile.Helpers.SQLiteHelper;
+import com.example.midiendodistanciasmobile.Models.Actividad;
 import com.example.midiendodistanciasmobile.Utilities.AlertDialog;
 import com.example.midiendodistanciasmobile.Utilities.Constants;
 import com.example.midiendodistanciasmobile.Utilities.Internet;
@@ -18,10 +21,12 @@ import com.example.midiendodistanciasmobile.WebService.PeticionAPIRest;
 import com.example.midiendodistanciasmobile.WebService.RegistroEvento;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.ArrayList;
+
 public class RegisterActivity extends AppCompatActivity {
 
     Button registerButton;
-
+    private SQLiteDatabase db;
     TextInputEditText name;
     TextInputEditText lastname;
     TextInputEditText dni;
@@ -56,47 +61,55 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 valueName = name.getText().toString();
-                valueLastname =  lastname.getText().toString();
-                valueDni =  Integer.parseInt(dni.getText().toString());
-                valueEmail =  email.getText().toString();
+                valueLastname = lastname.getText().toString();
+                valueDni = Integer.parseInt(dni.getText().toString());
+                valueEmail = email.getText().toString();
                 valuePassword = password.getText().toString();
 
                 try {
 
-                    PeticionAPIRest registro =  new PeticionAPIRest(valueName, valueLastname, valueDni, valueEmail, valuePassword, Constants.URI_REGISTER,
-                        new AsyncResponse() {
-                            @Override
-                            public void processFinish(String status, String env, String token) {
+                    PeticionAPIRest registro = new PeticionAPIRest(valueName, valueLastname, valueDni, valueEmail, valuePassword, Constants.URI_REGISTER,
+                            new AsyncResponse() {
+                                @Override
+                                public void processFinish(String status, String env, String token) {
 
-                                if (status == Constants.STATE_ERROR) {
-                                    AlertDialog.displayAlertDialog(RegisterActivity.this, "Algo ha ocurrido.",
-                                            "No se pudo completar el registro. Verifique que los datos sean correctos.", "OK");
-                                    Log.e("ERROR", "processFinish: Error en petición rest API." );
-                                    return;
+                                    if (status == Constants.STATE_ERROR) {
+                                        AlertDialog.displayAlertDialog(RegisterActivity.this, "Algo ha ocurrido.",
+                                                "No se pudo completar el registro. Verifique que los datos sean correctos.", "OK");
+                                        Log.e("ERROR", "processFinish: Error en petición rest API.");
+                                        return;
+                                    }
+                                    Log.i("Response", "Response de petición:");
+                                    Log.i("Response", "State: " + status);
+                                    Log.i("Response", "Env: " + env);
+                                    Log.i("Response", "Token: " + token);
+
+                                    RegistroEvento evento = new RegistroEvento(token, "Registro de usuario", "ACTIVO", "Registro de usuario.");
+                                    evento.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+                                    //guardamos usuario en base de datos
+                                    SQLiteHelper dbHelper = new SQLiteHelper(RegisterActivity.this);
+                                    db = dbHelper.getWritableDatabase();
+
+                                    if (db != null) {
+
+                                        db.execSQL("INSERT INTO Usuario (Email) VALUES (valueEmail)");
+                                    }
+                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                    startActivity(intent);
                                 }
-                                Log.i("Response", "Response de petición:");
-                                Log.i("Response", "State: " + status);
-                                Log.i("Response", "Env: " + env);
-                                Log.i("Response", "Token: " + token);
+                            });
 
-                                RegistroEvento evento = new RegistroEvento(token, "Registro de usuario", "ACTIVO", "Registro de usuario.");
-                                evento.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    registro.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                            }
-                    });
-
-                   registro.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-                }catch (Exception e) {
-                    Log.e("Register Error", "onClick: Error" + e.getMessage(),e);
+                } catch (Exception e) {
+                    Log.e("Register Error", "onClick: Error" + e.getMessage(), e);
                 }
             }
         });
     }
 
-    public void showToolbar(String title, boolean upButton ){
+    public void showToolbar(String title, boolean upButton) {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(title);
@@ -108,11 +121,12 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(intent);
+
             }
         });
     }
 
-    public boolean validateData(){
+    public boolean validateData() {
 
         boolean internetConnection = Internet.isInternetAvailable(RegisterActivity.this);
 
@@ -124,9 +138,9 @@ public class RegisterActivity extends AppCompatActivity {
             return false;
         }
 
-        if ( name.getText().toString().length() == 0 || lastname.getText().toString().length() == 0 ||
+        if (name.getText().toString().length() == 0 || lastname.getText().toString().length() == 0 ||
                 dni.getText().toString().length() == 0 || email.getText().toString().length() == 0 ||
-                password.getText().toString().length() == 0){
+                password.getText().toString().length() == 0) {
 
             AlertDialog.displayAlertDialog(RegisterActivity.this, "Datos incompletos",
                     "Todos los datos son requeridos, verifique de completar todos.", "OK");
@@ -135,7 +149,7 @@ public class RegisterActivity extends AppCompatActivity {
             return false;
         }
 
-        if ( password.getText().toString().length() < 8){
+        if (password.getText().toString().length() < 8) {
             AlertDialog.displayAlertDialog(RegisterActivity.this, "Contraseña debil",
                     "La contraseña debe tener al menos 8 caracteres.", "OK");
 

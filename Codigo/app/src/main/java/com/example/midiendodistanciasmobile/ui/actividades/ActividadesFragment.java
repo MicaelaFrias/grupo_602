@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.midiendodistanciasmobile.Helpers.SQLiteHelper;
+import com.example.midiendodistanciasmobile.MainActivity;
 import com.example.midiendodistanciasmobile.Models.Actividad;
 import com.example.midiendodistanciasmobile.Models.Usuario;
 import com.example.midiendodistanciasmobile.R;
@@ -37,6 +38,7 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
     private ActividadesViewModel actividadesViewModel;
     private SQLiteDatabase db;
     public int contadorPasos = 0;
+    public int usuarioID = 0;
     private SensorManager mSensorManager;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -74,11 +76,12 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
 
     public ArrayList<Actividad> GetActividades(SQLiteDatabase db) {
         ArrayList<Actividad> actividades = new ArrayList<Actividad>();
-            Cursor c = db.rawQuery("Select * from Actividad ", null);
+            Cursor c = db.rawQuery("Select * from Actividad WHERE UsuarioID = ?",
+                    new String[]{String.valueOf(((MainActivity)getActivity()).UsuarioId)});
             if (c != null) {
                 c.moveToFirst();
                 do {
-                    //Asignamos el valor en nuestras variables para usarlos en lo que necesitemos
+                    //Agergamos actividades del usuario loggeado
                     actividades.add(new Actividad(Integer.parseInt(c.getString(c.getColumnIndex("Id"))),
                             Integer.parseInt(c.getString(c.getColumnIndex("CantidadPasos"))
                             ), new Date(), new Usuario()));

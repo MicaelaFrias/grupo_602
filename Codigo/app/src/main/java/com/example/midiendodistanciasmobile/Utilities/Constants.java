@@ -4,7 +4,7 @@ public class Constants {
 
     public static final String ENV_TEST = "TEST";
     public static final String ENV_DEV = "DEV";
-    public static final String ENV = "TEST";
+    public static final String ENV = "DEV";
 
     public static final String URI_REGISTER = "http://so-unlam.net.ar/api/api/register";
     public static final String URI_LOGIN = "http://so-unlam.net.ar/api/api/login";

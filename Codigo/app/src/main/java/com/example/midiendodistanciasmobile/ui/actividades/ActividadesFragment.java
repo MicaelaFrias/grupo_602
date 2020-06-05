@@ -115,7 +115,7 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
     @Override
     public void onSensorChanged(SensorEvent event) {
         float step = event.values[0];
-        Log.i("SENSOR_STEP", "onSensorChanged: Se detecto paso nro: " + contadorPasos++);
+        Log.i("SENSOR_STEP", "onSensorChanged: Se detecto paso nro: " + contadorPasos);
 
         //guardamos usuario en base de datos
         SQLiteHelper dbHelper = new SQLiteHelper(this.getContext());

@@ -2,6 +2,7 @@ package com.example.midiendodistanciasmobile.ui.actividades;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -9,7 +10,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +30,7 @@ import com.example.midiendodistanciasmobile.MainActivity;
 import com.example.midiendodistanciasmobile.Models.Actividad;
 import com.example.midiendodistanciasmobile.Models.Usuario;
 import com.example.midiendodistanciasmobile.R;
+import com.example.midiendodistanciasmobile.WebService.RegistroEvento;
 
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
@@ -48,6 +52,10 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
     private ListView list;
     ArrayList<Actividad> actividades = new ArrayList<Actividad>();
     private SensorManager mSensorManager;
+    private String token;
+    private String email;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -55,10 +63,15 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
                 ViewModelProviders.of(this).get(ActividadesViewModel.class);
         View root = inflater.inflate(R.layout.fragment_actividades, container, false);
         usuarioID = ((MainActivity) getActivity()).UsuarioId;
+        email = ((MainActivity) getActivity()).UserEmail;
         SQLiteHelper dbHelper = new SQLiteHelper(getActivity());
         db = dbHelper.getWritableDatabase();
 
         initSensor();
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        editor = preferences.edit();
+        token = preferences.getString("tokenCurrentUser", "");
 
         if (db != null) {
             actividades = GetActividades(db);
@@ -132,6 +145,18 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
         }
         ArrayAdapter<Actividad> arrayAdapter = new ArrayAdapter<Actividad>(getActivity(), android.R.layout.simple_list_item_1, actividades);
         list.setAdapter(arrayAdapter);
+
+        //Cada 10 pasos realiza un registro de actividad.
+        if ( contadorPasos%10 == 0){
+            if (token != ""){
+                RegistroEvento evento = new RegistroEvento(token, "Actividad", "ACTIVO", "Usuario " + email + " ha realizado una actividad." );
+                evento.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            } else {
+                Log.e("ERROR", "onClick: ERROR DE TOKEN." );
+            }
+
+        }
+
     }
 
 

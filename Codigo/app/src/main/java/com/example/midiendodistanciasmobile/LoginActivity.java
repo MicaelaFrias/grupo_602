@@ -109,6 +109,7 @@ public class LoginActivity  extends AppCompatActivity {
 
                                     editor.remove("tokenCurrentUser");
                                     editor.putString("tokenCurrentUser", token);
+                                    editor.commit();
 
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     intent.putExtra("UserEmail", valueEmail);

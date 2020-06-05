@@ -18,7 +18,7 @@ public final class GPSTracker implements LocationListener {
 
     public boolean isGPSEnabled = false;
     boolean isNetworkEnabled = false;
-    Integer DIST_LIMITE = 20;
+    Integer DIST_LIMITE = 8;
     Location location; // location
     double latitude; // latitude
     double longitude; // longitude
@@ -154,6 +154,10 @@ public final class GPSTracker implements LocationListener {
         return longitude;
     }
 
+    public int getLimite(){
+        return DIST_LIMITE;
+    }
+
     @Override
     public void onLocationChanged(Location location) {
 
@@ -169,9 +173,9 @@ public final class GPSTracker implements LocationListener {
         if (dist > distMax){
             distMax = dist;
         }
-        AlertDialog.displayAlertDialog((Activity) mContext,"GPS Distancia", "Distancia calculada:: " + dist, "Ok");
 
         if (dist >= DIST_LIMITE) {
+            AlertDialog.displayAlertDialog((Activity) mContext,"GPS Distancia", "Distancia calculada:: " + dist, "Ok");
         }
 
         Log.i("GPS-Dist", "Distancia:: " + dist);

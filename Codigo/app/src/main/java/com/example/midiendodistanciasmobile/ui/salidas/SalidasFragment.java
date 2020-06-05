@@ -1,6 +1,7 @@
 package com.example.midiendodistanciasmobile.ui.salidas;
 
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -16,8 +17,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.midiendodistanciasmobile.MainActivity;
 import com.example.midiendodistanciasmobile.Models.Salida;
 import com.example.midiendodistanciasmobile.R;
+import com.example.midiendodistanciasmobile.WebService.RegistroEvento;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,6 +29,9 @@ public class SalidasFragment extends Fragment {
 
     private SalidasViewModel salidasViewModel;
     private GPSTracker location;
+    private String email;
+    private String token;
+
     ArrayAdapter<String> arrayAdapter;
     ArrayList<String> salidas;
     SharedPreferences preferences;
@@ -41,7 +47,11 @@ public class SalidasFragment extends Fragment {
 
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         editor = preferences.edit();
+
+        token = preferences.getString("tokenCurrentUser", "");
         salidas = setSalidas();
+
+        email = ((MainActivity)getActivity()).UserEmail;
 
         final ListView list = root.findViewById(R.id.listSalidas);
         arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, salidas);
@@ -56,9 +66,18 @@ public class SalidasFragment extends Fragment {
                         return;
 
                     buttonStart.setText("Detener");
-                    textView.setText("La salida ha comenzado, se notificará si supera los límites establecidos.");
+                    textView.setText("La salida ha comenzado, se notificará si supera los límites establecidos. (" + location.getLimite() + "mts)");
                 } else {
                     location.stopGps();
+
+                    if (token != ""){
+                        RegistroEvento evento = new RegistroEvento(token, "Salida", "ACTIVO", "Usuario " + email + " ha realizado un recorrido." );
+                        evento.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    } else {
+                        Log.e("ERROR", "onClick: ERROR DE TOKEN." );
+                    }
+
+
                     salidas.add(new Salida(new Date(), location.getDistMax()).toString());
                     arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, salidas);
                     list.setAdapter(arrayAdapter);

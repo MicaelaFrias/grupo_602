@@ -99,7 +99,7 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
             c.moveToFirst();
             do {
                 //Agregamos actividades del usuario loggeado
-                actividades.add(new Actividad(Integer.parseInt(c.getString(c.getColumnIndex("Id"))),
+                actividades.add(new Actividad(Integer.parseInt(c.getString(c.getColumnIndex("UsuarioId"))),
                         Integer.parseInt(c.getString(c.getColumnIndex("CantidadPasos"))
                         ), new Date(), new Usuario()));
             } while (c.moveToNext());
@@ -139,9 +139,7 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
             db.execSQL("INSERT INTO Actividad (Fecha,CantidadPasos, UsuarioId) VALUES ('" +
                     new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()) +
                     "', 1," + usuarioID + ")");
-            actividades.add(new Actividad(Integer.parseInt(c.getString(c.getColumnIndex("Id"))),
-                    Integer.parseInt(c.getString(c.getColumnIndex("CantidadPasos"))
-                    ), new Date(), new Usuario()));
+            actividades.add(new Actividad(usuarioID, 1, new Date(), new Usuario()));
         }
         ArrayAdapter<Actividad> arrayAdapter = new ArrayAdapter<Actividad>(getActivity(), android.R.layout.simple_list_item_1, actividades);
         list.setAdapter(arrayAdapter);

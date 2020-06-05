@@ -1,5 +1,6 @@
 package com.example.midiendodistanciasmobile.ui.actividades;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.midiendodistanciasmobile.Helpers.SQLiteHelper;
+import com.example.midiendodistanciasmobile.LoginActivity;
 import com.example.midiendodistanciasmobile.MainActivity;
 import com.example.midiendodistanciasmobile.Models.Actividad;
 import com.example.midiendodistanciasmobile.Models.Usuario;
@@ -28,6 +30,7 @@ import com.example.midiendodistanciasmobile.R;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -46,7 +49,7 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
         actividadesViewModel =
                 ViewModelProviders.of(this).get(ActividadesViewModel.class);
         View root = inflater.inflate(R.layout.fragment_actividades, container, false);
-
+        usuarioID = ((MainActivity) getActivity()).UsuarioId;
         SQLiteHelper dbHelper = new SQLiteHelper(getActivity());
         db = dbHelper.getWritableDatabase();
         ArrayList<Actividad> actividades = new ArrayList<Actividad>();
@@ -76,21 +79,21 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
 
     public ArrayList<Actividad> GetActividades(SQLiteDatabase db) {
         ArrayList<Actividad> actividades = new ArrayList<Actividad>();
-            Cursor c = db.rawQuery("Select * from Actividad WHERE UsuarioID = ?",
-                    new String[]{String.valueOf(((MainActivity)getActivity()).UsuarioId)});
-            if (c != null) {
-                c.moveToFirst();
-                do {
-                    //Agergamos actividades del usuario loggeado
-                    actividades.add(new Actividad(Integer.parseInt(c.getString(c.getColumnIndex("Id"))),
-                            Integer.parseInt(c.getString(c.getColumnIndex("CantidadPasos"))
-                            ), new Date(), new Usuario()));
-                } while (c.moveToNext());
-            }
+        Cursor c = db.rawQuery("Select * from Actividad WHERE UsuarioID = ?",
+                new String[]{String.valueOf(usuarioID)});
+        if (c != null && c.getCount() != 0) {
+            c.moveToFirst();
+            do {
+                //Agregamos actividades del usuario loggeado
+                actividades.add(new Actividad(Integer.parseInt(c.getString(c.getColumnIndex("Id"))),
+                        Integer.parseInt(c.getString(c.getColumnIndex("CantidadPasos"))
+                        ), new Date(), new Usuario()));
+            } while (c.moveToNext());
+        }
 
-            //Cerramos el cursor y la conexion con la base de datos
-            c.close();
-            db.close();
+        //Cerramos el cursor y la conexion con la base de datos
+        c.close();
+        db.close();
 
         return actividades;
     }
@@ -100,10 +103,27 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
         float step = event.values[0];
         Log.i("SENSOR_STEP", "onSensorChanged: Se detecto paso nro: " + contadorPasos++);
 
-        /*
-        * Agregar a base, si existe un registro con la misma fecha, cada 30pasos-> actualizar
-        * else -> crear nuevo registro
-        * */
+        //guardamos usuario en base de datos
+        SQLiteHelper dbHelper = new SQLiteHelper(this.getContext());
+        db = dbHelper.getWritableDatabase();
+        Cursor c = db.rawQuery("Select * from Actividad WHERE Fecha =  ? AND UsuarioId = usuarioID",
+                new String[]{String.valueOf(Calendar.getInstance().getTime())});
+
+        //si habia una actividad asociada a este usuario en el dia de hoy
+        if (db != null && c.getCount() != 0) {
+            ContentValues cv = new ContentValues();
+            cv.put("CantidadPasos", contadorPasos++);
+
+            db.update("Actividad",
+                    cv,
+                    "Fecha='" + Calendar.getInstance().getTime(),
+                    new String[]{String.valueOf(Calendar.getInstance().getTime()),
+                            String.valueOf(usuarioID)});
+
+        } else if (c.getCount() == 0) {
+            db.execSQL("INSERT INTO Actividad (Fecha,CantidadPasos, UsuarioId) VALUES ('" + Calendar.getInstance().getTime() +
+                    "', '" + contadorPasos++ + "','" + usuarioID + "'");
+        }
     }
 
 

@@ -29,7 +29,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5sp"
-                android:text="Nombre de usuario"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/user_name" />
 
@@ -42,7 +41,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
-                    android:text="Nro Grupo"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="@dimen/card_description" />
 
@@ -50,7 +48,6 @@
                     android:id="@+id/user_com"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nro Comisión"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="@dimen/card_description" />
 
@@ -61,7 +58,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_bottom_description"
-                android:text="usuario@gmail.com"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/card_description" />
 

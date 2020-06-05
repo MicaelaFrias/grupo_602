@@ -42,7 +42,6 @@ public class CardAdapterRecyclerView extends RecyclerView.Adapter<CardAdapterRec
         Card card = cards.get(position);
         holder.titleCard.setText(card.getTitleCard());
         holder.descriptionCard.setText(card.getDescriptionCard());
-        holder.labelButtonCard.setText(card.getLabelButtonCard());
         Picasso.with(activity).load(card.getPicture()).into(holder.pictureCard);
     }
 
@@ -56,7 +55,6 @@ public class CardAdapterRecyclerView extends RecyclerView.Adapter<CardAdapterRec
         private ImageView pictureCard;
         private TextView titleCard;
         private TextView descriptionCard;
-        private TextView labelButtonCard;
 
         public CardViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -64,7 +62,6 @@ public class CardAdapterRecyclerView extends RecyclerView.Adapter<CardAdapterRec
             pictureCard = (ImageView) itemView.findViewById(R.id.card_picture);
             titleCard = (TextView) itemView.findViewById(R.id.card_title);
             descriptionCard = (TextView) itemView.findViewById(R.id.card_description);
-            labelButtonCard = (TextView) itemView.findViewById(R.id.card_button);
 
         }
     }

@@ -1,6 +1,7 @@
 package com.example.midiendodistanciasmobile;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Button;
 import android.view.View;
@@ -26,6 +28,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.net.InetAddress;
 
 public class LoginActivity  extends AppCompatActivity {
+
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
     Button loginButton;
     Button registrateButton;
 
@@ -46,6 +52,9 @@ public class LoginActivity  extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
 
         name = findViewById(R.id.name);
         lastname = findViewById(R.id.lastname);
@@ -92,15 +101,18 @@ public class LoginActivity  extends AppCompatActivity {
                                     Cursor c = db.rawQuery("Select * from Usuario WHERE Email =  ?", new String[]{valueEmail});
 
                                     if (db != null && c.getCount()==0) {
-
-                                        db.execSQL("INSERT INTO Usuario (Email) VALUES ('" + valueEmail + "')");
+                                        db.execSQL("INSERT INTO Usuario (Email, Nombre, Apellido) VALUES ('" + valueEmail + "', '" + valueName+ "', '" + valueLastname + "' )");
                                     }
 
                                     RegistroEvento evento = new RegistroEvento(token, "Login de usuario", "ACTIVO", "Login de usuario: " + valueEmail);
                                     evento.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
+                                    editor.remove("tokenCurrentUser");
+                                    editor.putString("tokenCurrentUser", token);
+
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     intent.putExtra("UserEmail", valueEmail);
+                                    intent.putExtra("UserName", valueLastname + ", " + valueName);
                                     startActivity(intent);
                                 }
                             });

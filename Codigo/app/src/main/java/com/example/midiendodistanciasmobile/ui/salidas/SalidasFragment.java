@@ -20,7 +20,6 @@ import com.example.midiendodistanciasmobile.Models.Salida;
 import com.example.midiendodistanciasmobile.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 
 public class SalidasFragment extends Fragment {

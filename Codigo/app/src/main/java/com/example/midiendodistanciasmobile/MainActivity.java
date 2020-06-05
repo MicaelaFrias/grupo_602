@@ -3,6 +3,7 @@ package com.example.midiendodistanciasmobile;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.midiendodistanciasmobile.Helpers.SQLiteHelper;
 import com.example.midiendodistanciasmobile.Models.Actividad;
@@ -19,6 +20,7 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     public String UserEmail;
+    public String UserName;
     private SQLiteDatabase db;
 
     public int UsuarioId;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -37,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         if (parametros != null) {
             //agarramos el mail de la persona
             UserEmail = parametros.getString("UserEmail");
+            UserName = parametros.getString("UserName");
+
             //buscamos el id de esa persona para buscar los datos correspondientes en los fragmentos
             SQLiteHelper dbHelper = new SQLiteHelper(MainActivity.this);
             db = dbHelper.getWritableDatabase();

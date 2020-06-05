@@ -47,25 +47,6 @@
                 android:textSize="@dimen/card_description"
                 android:layout_marginBottom="@dimen/margin_bottom_description"
                 />
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
-
-
-            <Button
-                android:id="@+id/card_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/card_label_button"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/card_description"
-                android:background="@drawable/btn_rounded"
-                android:paddingRight="15sp"
-                android:paddingLeft="15sp"
-                />
-
-        </LinearLayout>
-
 
         </LinearLayout>
 

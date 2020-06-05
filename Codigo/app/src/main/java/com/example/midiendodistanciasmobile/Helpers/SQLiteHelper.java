@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class SQLiteHelper extends SQLiteOpenHelper {
-    private static final String Usuarios = ("CREATE TABLE Usuario(Email VARCHAR(50),Id INTEGER PRIMARY KEY AUTOINCREMENT);");
+    private static final String Usuarios = ("CREATE TABLE Usuario(Email VARCHAR(50),Nombre VARCHAR(50), Apellido VARCHAR(50),Id INTEGER PRIMARY KEY AUTOINCREMENT);");
     private static final String Actividades = ("CREATE TABLE Actividad(Id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "CantidadPasos INTEGER, Fecha DATETIME,UsuarioId INTEGER NOT NULL, FOREIGN KEY (UsuarioId) REFERENCES " +
             "Usuario(\"+Id+\"));");

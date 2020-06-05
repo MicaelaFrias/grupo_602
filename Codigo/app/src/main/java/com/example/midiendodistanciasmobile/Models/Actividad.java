@@ -20,6 +20,10 @@ public class Actividad {
 
     }
 
+    public void setCantidadPasos(int cantidadPasos) {
+        CantidadPasos = cantidadPasos;
+    }
+
     public String toString()
     {
         return "Nro: " +  Id + " Fecha: " + Fecha.getDay() + "/" + Fecha.getMonth() + "/" + Fecha.getYear()  + " Cantidad de pasos: " +  CantidadPasos;

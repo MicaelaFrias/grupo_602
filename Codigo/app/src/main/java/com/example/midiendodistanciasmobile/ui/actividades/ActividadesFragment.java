@@ -29,12 +29,15 @@ import com.example.midiendodistanciasmobile.Models.Usuario;
 import com.example.midiendodistanciasmobile.R;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static androidx.core.content.ContextCompat.getSystemService;
+import static java.util.Calendar.DATE;
 
 public class ActividadesFragment extends Fragment implements SensorEventListener {
 
@@ -42,6 +45,8 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
     private SQLiteDatabase db;
     public int contadorPasos = 0;
     public int usuarioID = 0;
+    private ListView list;
+    ArrayList<Actividad> actividades = new ArrayList<Actividad>();
     private SensorManager mSensorManager;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -52,18 +57,14 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
         usuarioID = ((MainActivity) getActivity()).UsuarioId;
         SQLiteHelper dbHelper = new SQLiteHelper(getActivity());
         db = dbHelper.getWritableDatabase();
-        ArrayList<Actividad> actividades = new ArrayList<Actividad>();
 
         initSensor();
 
         if (db != null) {
-            //inserto valores de prueba para actividades (proximamente se insertaria al hacer efectivamente una actividad)
-           /* db.execSQL("INSERT INTO Usuario (Id) VALUES (1)");
-            db.execSQL("INSERT INTO Actividad (CantidadPasos, UsuarioId) VALUES (200,1)");*/
             actividades = GetActividades(db);
         }
 
-        final ListView list = root.findViewById(R.id.list);
+        list = root.findViewById(R.id.list);
         ArrayAdapter<Actividad> arrayAdapter = new ArrayAdapter<Actividad>(getActivity(), android.R.layout.simple_list_item_1, actividades);
         list.setAdapter(arrayAdapter);
         return root;
@@ -107,7 +108,7 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
         SQLiteHelper dbHelper = new SQLiteHelper(this.getContext());
         db = dbHelper.getWritableDatabase();
         Cursor c = db.rawQuery("Select * from Actividad WHERE Fecha =  ? AND UsuarioId = usuarioID",
-                new String[]{String.valueOf(Calendar.getInstance().getTime())});
+                new String[]{String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()))});
 
         //si habia una actividad asociada a este usuario en el dia de hoy
         if (db != null && c.getCount() != 0) {
@@ -116,14 +117,21 @@ public class ActividadesFragment extends Fragment implements SensorEventListener
 
             db.update("Actividad",
                     cv,
-                    "Fecha='" + Calendar.getInstance().getTime(),
+                    "Fecha = ? AND UsuarioId = ?",
                     new String[]{String.valueOf(Calendar.getInstance().getTime()),
                             String.valueOf(usuarioID)});
+            actividades.get(actividades.size()-1).setCantidadPasos(contadorPasos);
 
-        } else if (c.getCount() == 0) {
-            db.execSQL("INSERT INTO Actividad (Fecha,CantidadPasos, UsuarioId) VALUES ('" + Calendar.getInstance().getTime() +
-                    "', '" + contadorPasos++ + "','" + usuarioID + "'");
+         } else if (c.getCount() == 0) {
+            db.execSQL("INSERT INTO Actividad (Fecha,CantidadPasos, UsuarioId) VALUES ('" +
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()) +
+                    "', 1," + usuarioID + ")");
+            actividades.add(new Actividad(Integer.parseInt(c.getString(c.getColumnIndex("Id"))),
+                    Integer.parseInt(c.getString(c.getColumnIndex("CantidadPasos"))
+                    ), new Date(), new Usuario()));
         }
+        ArrayAdapter<Actividad> arrayAdapter = new ArrayAdapter<Actividad>(getActivity(), android.R.layout.simple_list_item_1, actividades);
+        list.setAdapter(arrayAdapter);
     }
 
 

@@ -10,7 +10,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             "CantidadPasos INTEGER, Fecha DATETIME,UsuarioId INTEGER NOT NULL, FOREIGN KEY (UsuarioId) REFERENCES " +
             "Usuario(\"+Id+\"));");
     private static final String Salidas = ("CREATE TABLE Salida(Id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            "Fecha DATETIME NOT NULL,HoraSalida TimeSpan,HoraRegreso TimeSpan,DistanciaMax Doble ,DistanciaRecorrida Doble, UsuarioId INTEGER NOT NULL, FOREIGN KEY (UsuarioId) REFERENCES " +
+            "Fecha DATETIME NOT NULL,HoraSalida TimeSpan,HoraRegreso TimeSpan,DistanciaMax Doble ,DistanciaRecorrida Doble," +
+            " UsuarioId INTEGER NOT NULL, FOREIGN KEY (UsuarioId) REFERENCES " +
             "Usuario(\"+Id+\"));");
 
 

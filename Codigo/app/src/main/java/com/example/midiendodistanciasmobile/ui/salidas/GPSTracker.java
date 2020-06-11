@@ -177,7 +177,7 @@ public final class GPSTracker implements LocationListener {
             distMax = dist;
         }
 
-        if (dist >= DIST_LIMITE) {
+        if (dist >= DIST_LIMITE) { //Al detenerse se detiene el GPS y se registra el recorrido
             AlertDialog.displayAlertDialog((Activity) mContext,"GPS Distancia", "Distancia recorrida: " + dist + ". Ha superado la distancia límite (" + DIST_LIMITE + "mts). Se registra salida.", "Ok");
             this.stopGps();
             this.locationManager = null;

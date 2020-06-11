@@ -7,9 +7,12 @@ import android.content.pm.PackageManager;
 import android.location.*;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
 
+import com.example.midiendodistanciasmobile.R;
 import com.example.midiendodistanciasmobile.Utilities.AlertDialog;
 
 public final class GPSTracker implements LocationListener {
@@ -175,7 +178,11 @@ public final class GPSTracker implements LocationListener {
         }
 
         if (dist >= DIST_LIMITE) {
-            AlertDialog.displayAlertDialog((Activity) mContext,"GPS Distancia", "Distancia calculada:: " + dist, "Ok");
+            AlertDialog.displayAlertDialog((Activity) mContext,"GPS Distancia", "Distancia recorrida: " + dist + ". Ha superado la distancia límite (" + DIST_LIMITE + "mts). Se registra salida.", "Ok");
+            this.stopGps();
+            this.locationManager = null;
+            Button button= (Button) ((Activity) this.mContext).findViewById(R.id.startButton);
+            button.performClick();
         }
 
         Log.i("GPS-Dist", "Distancia:: " + dist);

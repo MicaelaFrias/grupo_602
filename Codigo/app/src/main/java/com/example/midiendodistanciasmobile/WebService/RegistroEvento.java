@@ -84,6 +84,7 @@ public class RegistroEvento extends AsyncTask {
                     dta.append(chunks);
                 }
                 Log.i(TAG, "******Response Events******: " + dta.toString());
+                con.disconnect();
                 return dta.toString();
             } else {
                 Log.i(TAG, "doInBackground Events:  StatusCode" + statusCode + "  Message: " + statusMsg );

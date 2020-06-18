@@ -50,6 +50,7 @@ public class Game extends View implements SensorEventListener {
     }
 
     @Override
+    //cambia los valores de las variables del juego
     public void onSensorChanged(SensorEvent event) {
 
         if (timer == 0){

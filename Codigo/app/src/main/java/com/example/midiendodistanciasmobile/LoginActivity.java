@@ -118,6 +118,7 @@ public class LoginActivity  extends AppCompatActivity {
                                 }
                             });
 
+                    //activa do in background (en peticion api rest)
                     login.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
                 }catch (Exception e) {

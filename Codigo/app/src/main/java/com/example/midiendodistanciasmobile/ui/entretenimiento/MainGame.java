@@ -15,11 +15,12 @@ import com.example.midiendodistanciasmobile.RegisterActivity;
 public class MainGame extends AppCompatActivity {
 
     Game entretenimiento;
-
+//entretenimiento crea esta activity, q usa la view Game.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         entretenimiento = new Game(this);
+        //este metodo setea un layout generalmente pero tenemos una vista
         setContentView(entretenimiento);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }

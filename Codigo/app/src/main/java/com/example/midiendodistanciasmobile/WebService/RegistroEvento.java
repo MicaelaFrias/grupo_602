@@ -99,7 +99,7 @@ public class RegistroEvento extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object response) {
-
+//no necesitabamos la rta
     }
 
 

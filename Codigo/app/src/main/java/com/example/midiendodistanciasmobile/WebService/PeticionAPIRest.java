@@ -51,21 +51,25 @@ public class PeticionAPIRest extends AsyncTask {
         try{
             Log.i(TAG, "Before:: " + this.uri + " __ " + this.body.toString());
 
+
             URL url=new URL(this.uri);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
             con.setDoOutput(true);
+
             con.setRequestProperty("Content-Type", "application/json");
             con.setRequestMethod("POST");
 
-            // Write Request to output stream to server.
             OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
             out.write(this.body.toString());
             out.close();
 
-            // Check the connection status.
+
+            // Chequeamos el estado de la respuesta
             int statusCode = con.getResponseCode();
             String statusMsg = con.getResponseMessage();
 
+            //de acuerdo al estado de respuesta leemos la secuencia del cuerpo del response
             if (statusCode >= 200 && statusCode<300) {
                 InputStream it = new BufferedInputStream(con.getInputStream());
                 InputStreamReader read = new InputStreamReader(it);
@@ -80,6 +84,7 @@ public class PeticionAPIRest extends AsyncTask {
             } else {
                 Log.i(TAG, "doInBackground:  StatusCode" + statusCode + "  Message: " + statusMsg );
             }
+            con.disconnect();
 
         }catch (Exception e ){
             Log.e(TAG, "doInBackground: error Thread " + e.getMessage(),e );
@@ -98,7 +103,7 @@ public class PeticionAPIRest extends AsyncTask {
         }
 
          try {
-
+        //este metodoy os demas de la cadena reciben objetos genericos, aca se q es y lo casteo.
              JSONObject obj = new JSONObject( (String)response);
              String state = obj.getString("state");
              String env = this.uri == Constants.URI_REGISTER ? obj.getString("env"): "none" ;
